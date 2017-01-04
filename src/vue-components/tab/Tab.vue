@@ -68,7 +68,12 @@ export default {
       return this.$parent.activeTab === this.uid
     },
     targetElement () {
-      return this.$parent.refs && this.$parent.refs[this.uid]
+      // When tab content is rendered in an iterator, it gets put into an array under it's ref name, so let's assume it's the first one we find and deref.
+      let target = this.$parent.refs && this.$parent.refs[this.uid]
+      if (target && target.constructor === Array && target.length > 0) {
+        target = target[0]
+      }
+      return target
     }
   },
   watch: {
